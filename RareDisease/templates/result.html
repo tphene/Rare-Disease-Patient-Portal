@@ -1,0 +1,341 @@
+{% extends "/layouts/layout1.html" %}
+{% block title %}Result{% endblock %}
+{% block content %}
+
+<header class="masthead">
+  <h2 class="text-center" style="color: black;">Required Medicines and Therapy Description</h2>
+  <hr class="star-light"><br>
+  <h4 class="text-center" style="color: brown;">Medicine Requirement:</h4><br>
+  {% for medicine in medicines %}
+    <h6 class="text-left" style="color: black;padding-left:30px;">{{medicine.medicine_name}}</h6>
+    <p class="text-left">{{medicine.medicine_desc}}</p>
+  {% endfor %}
+  <br>
+  <h4 class="text-center" style="color: brown;">Therapy Requirement:</h4><br>
+  {% for therapy in therapies %}
+    <h6 class="text-left" style="color: black;padding-left:30px;">{{therapy.therapist_name}}</h6>
+    <p class="text-left">{{therapy.therapy_desc}}</p>
+  {% endfor %}
+
+    <!-- Portfolio Grid Section -->
+
+
+
+    <section id="portfolio" style="background-color:white;">
+      <h2 class="text-center" style="color:green;">Click on below buttons to get cost information</h2>
+      <br>
+      <br>
+      <div class="container">
+        <br><br>
+        <div class="row">
+
+          <div class="col-sm-4 portfolio-item">
+            <a class="portfolio-link" href="#portfolioModal1" data-toggle="modal">
+              <input type="submit" class="btn btn-primary" value="GET ANNUAL COST OF TREATMENT" onclick="fading1()"></input>
+            </a>
+          </div>
+          <div class="col-sm-4 portfolio-item">
+            <a class="portfolio-link" href="#portfolioModal2" data-toggle="modal">
+              <input type="submit" class="btn btn-primary" value="GET NEXT 3 YEARS COST PREDICTIONS" onclick="fading1()"></input>
+            </a>
+          </div>
+
+          <!--<div class="col-sm-6 portfolio-item">
+            <a class="portfolio-link" href="#portfolioModal4" data-toggle="modal">
+              <input type="submit" class="btn btn-primary" value="Compare with other states" onclick="fading1()"></input>
+            </a>
+          </div>-->
+          <div class="col-sm-4 portfolio-item">
+            <a class="portfolio-link" href="#portfolioModal3" data-toggle="modal">
+              <input type="submit" class="btn btn-primary" value="CHECK COST OF LOST OPPORTUNITY" onclick="fading1()"></input>
+            </a>
+          </div>
+          <br><br><br><br><br>
+        </div>
+      </div>
+    </section>
+
+<!-- About Section -->
+    <section class="success" id="about">
+      <div class="container">
+        <h2 class="text-center" style="color:black;">HELP</h2>
+        <hr class="star-light">
+        <div class="row">
+          <div class="col-lg-4 ml-auto">
+            <p class="text-left">The page shows the details of medicines and therapies required for the patient. Your doctor will be able to provide more accurate description but we have gathered some information for you that can give you an estimate of assiciated costs based on various factors.</p>
+          </div>
+          <div class="col-lg-4 mr-auto">
+            <p class="text-left">Click on the above buttons to get the annual cost for medicines and therapies, cost predictions for next 3 years based on the medicine and therapy requirements, inflation, statewise taxes and salaries for professionals and cost of lost opportunity in terms of money lost in taking care of the patient. </p>
+          </div>
+          <!--<div class="col-lg-8 mx-auto text-center">
+            <a href="#" class="btn btn-lg btn-outline">
+              <i class="fa fa-download"></i>
+              Download Theme
+            </a>
+          </div>-->
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+    <div class="scroll-top d-lg-none">
+      <a class="btn btn-primary js-scroll-trigger" href="#page-top">
+        <i class="fa fa-chevron-up"></i>
+      </a>
+    </div>
+
+    <form action="{{url_for('query')}}" method="POST">
+      <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+              <div class="lr">
+                <div class="rl"></div>
+              </div>
+            </div>
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-10 mx-auto">
+                  <div class="modal-body">
+                    <h4 class="text-center" style="color:green;">The below graph shows the costs for medication and therapies required for {{disease}}</h4>
+                    <br>
+                    <div id="chart_annual" class="chart"></div>
+                    <script type="text/javascript">
+                      var medicine_data_annual = {{ medicine_data_annual }};
+                      var therapy_data_annual = {{ therapy_data_annual }};
+                    </script>
+                    <br>
+                    <h5 style="color:black;">Cost of Medicines: ${{medicine_data_annual[0]}}, includes below medicines</h5>
+                    {% for index, value in medicine_desc %}
+                      <h6 style="color:green;">{{medicines[index].medicine_name}}:</h6>
+                      <h7 style="color:black;">{{ value }}</h7>
+                      <br>
+                      <br>
+                    {% endfor %}
+                    <br>
+                    <h5 style="color:black;">Cost of Therapies: ${{therapy_data_annual[0]}}, includes below therapies</h5>
+                    {% for index, value in therapy_desc %}
+                      <h6 style="color:green;">{{therapies[index].therapist_name}}:</h6>
+                      <h7 style="color:black;">{{ value }}</h7>
+                      <br>
+                      <br>
+                    {% endfor %}
+
+                    <br>
+                    <button class="btn btn-success" type="button" data-dismiss="modal">
+                      <i class="fa fa-times"></i>
+                      Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <form action="{{url_for('query')}}" method="POST">
+      <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+              <div class="lr">
+                <div class="rl"></div>
+              </div>
+            </div>
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-10 mx-auto">
+                  <div class="modal-body">
+                    <h4 class="text-center" style="color:green;">The below graph shows the 3 years cost predictions for medication and therapies required for {{disease}}</h4>
+                    <br>
+                    <div id="chart_pred" class="chart"></div>
+                    <script type="text/javascript">
+                      var medicine_data_pred = {{ medicine_data_pred }};
+                      var therapy_data_pred = {{ therapy_data_pred }};
+                    </script>
+                    <br>
+                    <h5 style="color:black;">Cost of Medicines for next 3 years is: ${{medicine_data_pred[0]}}, ${{medicine_data_pred[1]}} and ${{medicine_data_pred[2]}}, includes below medicines</h5>
+                    {% for index, value in medicine_desc_comp %}
+                      <h6 style="color:green;">{{medicines[index].medicine_name}}:</h6>
+                      <h7 style="color:black;">{{ value }}</h7>
+                      <br>
+                      <br>
+                    {% endfor %}
+                    <br>
+                    <h5 style="color:black;">Cost of Therapies for next 3 years is: ${{therapy_data_pred[0]}}, ${{therapy_data_pred[1]}} and ${{therapy_data_pred[2]}}, includes below therapies</h5>
+                    {% for index, value in therapy_desc_comp %}
+                      <h6 style="color:green;">{{therapies[index].therapist_name}}:</h6>
+                      <h7 style="color:black;">{{ value }}</h7>
+                      <br>
+                      <br>
+                    {% endfor %}
+
+                    <br>
+                    <button class="btn btn-success" type="button" data-dismiss="modal">
+                      <i class="fa fa-times"></i>
+                      Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <form action="{{url_for('query')}}" method="POST">
+      <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+              <div class="lr">
+                <div class="rl"></div>
+              </div>
+            </div>
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-8 mx-auto">
+                  <div class="modal-body">
+                    <h4 class="text-center" style="color:green;">This section shows the lost opportunity in taking care of a patient with {{disease}}</h4>
+                    <hr class="star-light">
+                    <br>
+                    <h5 style="color:black;">The patient requires around {{hours_for_therapy}} hours of therapies throughout the year.</h5>
+                    <br>
+                    <h5 style="color:black;">Based on your salary of ${{salary}} and the time you have to spend in taking care of the patient in terms of therapies, we predict that you loose approximately ${{lost_opportunity}} annually as lost opportunity</h5>
+                    <br>
+                    <button class="btn btn-success" type="button" data-dismiss="modal">
+                      <i class="fa fa-times"></i>
+                      Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <form action="{{url_for('query')}}" method="POST">
+      <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+              <div class="lr">
+                <div class="rl"></div>
+              </div>
+            </div>
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-12 mx-auto">
+                  <div class="modal-body">
+                    <p class="text-center" style="color:green;">The below chart shows the comparison of costs for primary medication and primary therapies required</p>
+                    <br>
+                    <div id="chart_compare" class="chart"></div>
+                    <!--<script type="text/javascript">
+                      #var states = {{ states }}
+                      #var medicine_cost_comp = {{ medicine_cost_comp }};
+                      #var therapy_cost_comp = {{ therapy_cost_comp }};
+                    </script>-->
+                    <h7 style="color:black;">Medicine:  {{medicines[0].medicine_name}}</h7>
+                    <h7 style="color:black;">Therapy:  {{therapies[0].therapist_name}}</h7>
+                    <br>
+                    <button class="btn btn-success" type="button" data-dismiss="modal">
+                      <i class="fa fa-times"></i>
+                      Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+</header>
+<script type="text/javascript">
+  Highcharts.chart('chart_annual', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Annual Cost for Medicines and Therapies'
+    },
+    subtitle: {
+        text: 'Costs are based on sales tax in your State of residence and medicine and therapy requirements for the disease'
+    },
+    xAxis: {
+        categories: [
+            'Yearly'
+        ],
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Cost ($)'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} $</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name: 'Annual Medicine cost',
+        data: medicine_data_annual
+
+    }, {
+        name: 'Annual Therapy cost',
+        data: therapy_data_annual
+
+    }]
+});
+</script>
+
+<script type="text/javascript">
+      Highcharts.chart('chart_pred', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Annual Medicine and Therapy Cost Comparison'
+        },
+        subtitle: {
+            text: 'Comparison is based on annual medicines and therapies required and current inflation rate'
+        },
+        xAxis: {
+            categories: ['Year2', 'Year3', 'Year4']
+        },
+        yAxis: {
+            title: {
+                text: 'Cost ($)'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: true
+            }
+        },
+
+        series: [{
+            name: 'Annual Medicine Cost',
+            data: medicine_data_pred
+        }, {
+            name: 'Annual Therapy Cost',
+            data: therapy_data_pred
+        }]
+       });
+</script>
+
+{% endblock %}

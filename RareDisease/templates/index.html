@@ -1,0 +1,168 @@
+{% extends "/layouts/layout1.html" %}
+{% block title %}Rare Disease Patient Portal{% endblock %}
+{% block content %}
+<!-- Header -->
+    <header class="masthead">
+      <div class="container">
+        <img class="img-fluid" src="/static/img/profile.jpg" alt="">
+        <div class="intro-text">
+          <span class="name"  style="font-size: 25pt">Get Information About Rare Diseases</span>
+          <hr class="star-light">
+          <span class="skills">Basic Info - Details about associated costs</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Portfolio Grid Section -->
+    <section id="portfolio">
+      <div class="container">
+        <h2 class="text-center">Rare Diseases</h2>
+        <hr class="star-primary">
+        <div class="row">
+          <div class="col-sm-3 portfolio-item">
+            <a class="portfolio-link" href="#portfolioModal1" data-toggle="modal">
+              <div class="caption">
+                <div class="caption-content">
+                  <i class="fa fa-search-plus fa-3x"></i>
+                </div>
+              </div>
+              <figure>
+                <img class="img-fluid" src="/static/img/portfolio/hemophilia.jpg" style="width:500px;height:200px;" alt="">
+                <figcaption class="text-center">HEMOPHILIA</figcaption>
+              </figure>
+
+            </a>
+          </div>
+          <div class="col-sm-3 portfolio-item">
+            <a class="portfolio-link" href="#portfolioModal2" data-toggle="modal">
+              <div class="caption">
+                <div class="caption-content">
+                  <i class="fa fa-search-plus fa-3x"></i>
+                </div>
+              </div>
+              <figure>
+                <img class="img-fluid" src="/static/img/portfolio/cystic.png" style="width:500px;height:200px;" alt="">
+                <figcaption class="text-center">CYSTIC-FIBROSIS</figcaption>
+              </figure>
+            </a>
+          </div>
+          <div class="col-sm-3 portfolio-item">
+            <a class="portfolio-link" href="#portfolioModal3" data-toggle="modal">
+              <div class="caption">
+                <div class="caption-content">
+                  <i class="fa fa-search-plus fa-3x"></i>
+                </div>
+              </div>
+              <figure>
+                <img class="img-fluid" src="/static/img/portfolio/sma.jpg" style="width:500px;height:200px;" alt="">
+                <figcaption class="text-center">SPINAL MUSCULAR ATROPHY(SMA)</figcaption>
+              </figure>
+            </a>
+          </div>
+          <div class="col-sm-3 portfolio-item">
+            <a class="portfolio-link" href="#portfolioModal4" data-toggle="modal">
+              <div class="caption">
+                <div class="caption-content">
+                  <i class="fa fa-search-plus fa-3x"></i>
+                </div>
+              </div>
+              <figure>
+                <img class="img-fluid" src="/static/img/portfolio/cvs.jpg" style="width:500px;height:200px;" alt="">
+                <figcaption class="text-center">CYCLIC VOMITING SYNDROME(CVS)</figcaption>
+              </figure>
+            </a>
+          </div>
+          <!--<div class="col-sm-4 portfolio-item">
+            <a class="portfolio-link" href="#portfolioModal5" data-toggle="modal">
+              <div class="caption">
+                <div class="caption-content">
+                  <i class="fa fa-search-plus fa-3x"></i>
+                </div>
+              </div>
+              <img class="img-fluid" src="/static/img/portfolio/safe.png" alt="">
+            </a>
+          </div>
+          <div class="col-sm-4 portfolio-item">
+            <a class="portfolio-link" href="#portfolioModal6" data-toggle="modal">
+              <div class="caption">
+                <div class="caption-content">
+                  <i class="fa fa-search-plus fa-3x"></i>
+                </div>
+              </div>
+              <img class="img-fluid" src="/static/img/portfolio/submarine.png" alt="">
+            </a>
+          </div>-->
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="success" id="about">
+      <div class="container">
+        <h2 class="text-center">About</h2>
+        <hr class="star-light">
+        <div class="row">
+          <div class="col-lg-4 ml-auto">
+            <p>This portal is aimed to help the Parents / caretakers of Rare Disease Patients. We know that you are going through a lot lately. Here's a little effort to help you during initial stages of rare disease treatment.</p>
+          </div>
+          <div class="col-lg-4 mr-auto">
+            <p>Using this portal, you can know about the costs associated with therapies and primary medicines for mentioned rare diseases. You can also see how much the costs vary for next 3 years.</p>
+          </div>
+          <!--<div class="col-lg-8 mx-auto text-center">
+            <a href="#" class="btn btn-lg btn-outline">
+              <i class="fa fa-download"></i>
+              Download Theme
+            </a>
+          </div>-->
+        </div>
+      </div>
+    </section>
+
+    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+    <div class="scroll-top d-lg-none">
+      <a class="btn btn-primary js-scroll-trigger" href="#page-top">
+        <i class="fa fa-chevron-up"></i>
+      </a>
+    </div>
+    {% for item in disease %}
+      <form action="{{url_for('query')}}" method="POST">
+        <div class="portfolio-modal modal fade" id="portfolioModal{{item.id}}" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                  <div class="rl"></div>
+                </div>
+              </div>
+              <div class="container">
+                <div class="row">
+                  <div class="col-lg-8 mx-auto">
+                    <div class="modal-body">
+                      <h2>{{item.disease_name}}</h2>
+                      <input name="diagnosis" value="{{item.disease_name}}" type="hidden">
+                      <hr class="star-primary">
+                      <p>{{item.disease_desc}}</p>
+                      <ul class="list-inline item-details">
+                        <li>Click on the appropriate link to get detailed information. If the disease is:</li>
+                        <li>
+                          <strong>
+                            <input id="stageOld" name="stage" type="submit" class="btn btn-primary" href="{{url_for('query', disease=item.disease_name)}}" value="Newly Diagnosed">
+                          </strong>
+                          <strong>
+                            <input id="stageOld" name="stage" type="submit" class="btn btn-primary" href="{{url_for('query', disease=item.disease_name)}}" value="Known for a while">
+                          </strong>
+                        </li>
+                      </ul>
+                      <button class="btn btn-success" type="button" data-dismiss="modal">
+                        <i class="fa fa-times"></i>
+                        Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    {% endfor %}
+{% endblock %}
